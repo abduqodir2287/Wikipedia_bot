@@ -49,7 +49,7 @@ async def handle_text(message: types.Message):
     await message.reply(f"{getwiki(message.text)}")
 
 async def startup(dp: Dispatcher):
-    await base.setup('Wiki')
+    base.setup('Wiki')
     print('Bot ishga tushdi ')
 
 async def shutdown(dp: Dispatcher):
