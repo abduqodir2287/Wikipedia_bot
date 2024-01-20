@@ -1,0 +1,1 @@
+wiki_bot_token = "6421869656:AAENaBhRTRhsoUC8YyWUV91A8QGNhaSAt18"
