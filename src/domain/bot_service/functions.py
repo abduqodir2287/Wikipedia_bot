@@ -7,8 +7,10 @@ from src.configs.logger_setup import logger
 class WikiBotFunctions:
 
 	@staticmethod
-	def get_wiki(text: str):
+	async def get_wiki(text: str, wiki_language: str) -> str | bool:
 		try:
+			wikipedia.set_lang(wiki_language)
+
 			page = wikipedia.page(text)
 
 			wikitext = page.content[:1000]
@@ -29,11 +31,12 @@ class WikiBotFunctions:
 				"🌐 Barcha ma'lumotlar👇👇\n\n"
 				f"{clean_text.strip()}\n\n"
 				"📚 Boshqa narsalar haqida bilishni xohlasangiz🙋‍♂️\n"
-				"Har qanday so'zni yuboring✍️"
-				"[Wikipedia](https://t.me/Wiki_in_Uzbek_language_bot)\n"
+				"Har qanday so'zni yuboring✍️\n"
+				"[Wikipedia](https://t.me/Wiki_in_Uzbek_language_bot) 🔝\n"
 			)
+
 		except Exception as e:
-			logger.error(f"{e}")
-			return "🔍 Wikipediada bu haqida ma'lumot yo'q🤷!"
+			logger.warning(f"{e}")
+			return False
 
 

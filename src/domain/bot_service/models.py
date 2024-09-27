@@ -5,4 +5,3 @@ class FSMAdmin(StatesGroup):
 	wiki_lang = State()
 	text = State()
 
-

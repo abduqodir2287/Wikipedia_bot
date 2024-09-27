@@ -38,13 +38,13 @@ class WikiBotService(WikiBotFunctions):
 
 	@staticmethod
 	async def get_wiki_lang_service(message: Message, state: FSMContext) -> None:
-		wiki_languages = {"O'zbek Tili🇺🇿": "uz", "Русский🇷🇺": "ru", "English🇺🇸": "en"}
+		wiki_languages = {"O'zbek🇺🇿": "uz", "Русский🇷🇺": "ru", "English🇺🇸": "en"}
 
 		language = wiki_languages.get(message.text)
 
 		if language:
 			await message.answer(f"{message.text} tili tanlandi\n\n"
-			                     f"Agar tilni o'zgartirmoqchi bo'lsangiz Меню bo'limidan set_lang bo'limini tanlang")
+			                     f"Agar tilni o'zgartirmoqchi bo'lsangiz Меню bo'limidan change_language bo'limini tanlang")
 
 			logger.info(f"{message.text} tili tanlandi")
 			await message.answer(
@@ -58,5 +58,38 @@ class WikiBotService(WikiBotFunctions):
 
 		else:
 			await message.answer("Ko'rsatilgan tildan birini tanlang!")
+
+
+	@staticmethod
+	async def change_language_service(message: Message, state: FSMContext) -> None:
+		await state.set_state(FSMAdmin.wiki_lang)
+		await message.answer("Tilni tanlang: ", reply_markup=choice_language)
+
+
+	@staticmethod
+	async def bot_help_command(message: Message) -> None:
+		await message.answer(
+			"Salom 👋! Bu Wikipedia bot. Bu yerda siz har qanday mavzu bo'yicha ma'lumot 📕 olishingiz mumkin.\n"
+			"Shunchaki menga istalgan so'zni yuboring va men uni Wikipediadan 🌐 topib beraman.\n\n"
+			"Agar Wikipediadan keladigan ma'lumotlar tilini o'zgartirmoqchi bo'lsangiz,\n"
+			"iltimos, Menyu bo'limidan **change_language** bo'limini tanlang."
+		)
+
+
+
+	async def send_info_service(self, message: Message, state: FSMContext) -> None:
+
+		state_data = await state.get_data()
+		wiki_language = state_data.get('wiki_lang')
+
+		information_about_something = await self.get_wiki(message.text, wiki_language)
+
+		if information_about_something:
+			await message.answer(information_about_something, parse_mode=ParseMode.MARKDOWN)
+
+		else:
+			await message.answer("🔍 Wikipediada bu haqida ma'lumot yo'q🤷!")
+
+		await state.set_state(FSMAdmin.text)
 
 
