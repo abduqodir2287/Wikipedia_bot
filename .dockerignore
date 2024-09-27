@@ -1,0 +1,8 @@
+Makefile
+README.md
+Pipfile
+Pipfile.lock
+Procfile
+/main.py
+.env_example
+/.gitignore

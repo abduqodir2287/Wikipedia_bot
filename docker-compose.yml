@@ -1,0 +1,16 @@
+version: "2"
+
+services:
+  wiki_bot:
+    build: .
+
+    volumes:
+      - .:/src
+
+    command: python -m src.main
+
+    env_file:
+      - .env
+
+    restart: on-failure
+
